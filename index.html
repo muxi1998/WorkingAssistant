@@ -113,21 +113,25 @@
         let daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
         let weekMenu = [];
         let availableRestaurants = [...selectedRestaurants];
+        let chosenRestaurants = []; // 新增：用於追蹤已選擇的餐廳
 
         daysOfWeek.forEach((day, index) => {
             if (availableRestaurants.length > 0) {
                 let randomIndex = Math.floor(Math.random() * availableRestaurants.length);
                 let selectedRestaurant = availableRestaurants[randomIndex];
                 weekMenu.push({day, restaurant: selectedRestaurant});
-                // 如果餐廳數量等於4，則在選擇完四個餐廳後重置可用餐廳列表
-                if (selectedRestaurants.length === 4 && index === 3) {
+                chosenRestaurants.push(selectedRestaurant); // 追蹤已選擇的餐廳
+                availableRestaurants.splice(randomIndex, 1);
+
+                // 檢查是否所有候選餐廳都至少被選擇過一次
+                if (availableRestaurants.length === 0 && chosenRestaurants.length < selectedRestaurants.length) {
+                    availableRestaurants = selectedRestaurants.filter(restaurant => !chosenRestaurants.includes(restaurant));
+                } else if (availableRestaurants.length === 0) {
                     availableRestaurants = [...selectedRestaurants];
-                } else if (selectedRestaurants.length > 4) {
-                    // 避免重複
-                    availableRestaurants.splice(randomIndex, 1);
+                    chosenRestaurants = []; // 重置已選擇的餐廳列表
                 }
             } else if (selectedRestaurants.length > 0) {
-                // 如果餐廳數量少於4，允許重複
+                // 如果餐廳數量少於5，允許重複
                 let randomIndex = Math.floor(Math.random() * selectedRestaurants.length);
                 let selectedRestaurant = selectedRestaurants[randomIndex];
                 weekMenu.push({day, restaurant: selectedRestaurant});
@@ -138,6 +142,7 @@
 
         updateCalendarWithMenu(weekMenu);
     }
+
 
 
     function createCalendar() {
