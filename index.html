@@ -37,9 +37,25 @@
             text-align: center;
             min-height: 100px; /* 確保有足夠的空間顯示晚餐資訊 */
         }
+        .logo-container {
+            position: fixed; /* 或者使用 absolute，根據需要 */
+            top: 10px; /* 上邊距，可調整 */
+            right: 10px; /* 右邊距，可調整 */
+            z-index: 1000; /* 確保Logo在最上層 */
+        }
+
+        .logo-container img {
+            height: 90px; /* Logo的高度，可根據需要調整 */
+            width: auto; /* 保持圖片的寬高比 */
+        }
+
     </style>
 </head>
 <body>
+
+<div class="logo-container">
+    <img src="imgs/logo.jpg" alt="Logo">
+</div>
 
 <div>
     <h1>安親班晚餐安排</h1>
