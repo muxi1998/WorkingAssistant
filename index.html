@@ -85,19 +85,30 @@
         let weekMenu = [];
         let availableRestaurants = [...selectedRestaurants];
 
-        daysOfWeek.forEach(day => {
+        daysOfWeek.forEach((day, index) => {
             if (availableRestaurants.length > 0) {
                 let randomIndex = Math.floor(Math.random() * availableRestaurants.length);
                 let selectedRestaurant = availableRestaurants[randomIndex];
                 weekMenu.push({day, restaurant: selectedRestaurant});
-                availableRestaurants.splice(randomIndex, 1); // 避免重複
+                // 如果餐廳數量等於4，則在選擇完四個餐廳後重置可用餐廳列表
+                if (selectedRestaurants.length === 4 && index === 3) {
+                    availableRestaurants = [...selectedRestaurants];
+                } else if (selectedRestaurants.length > 4) {
+                    // 避免重複
+                    availableRestaurants.splice(randomIndex, 1);
+                }
+            } else if (selectedRestaurants.length > 0) {
+                // 如果餐廳數量少於4，允許重複
+                let randomIndex = Math.floor(Math.random() * selectedRestaurants.length);
+                let selectedRestaurant = selectedRestaurants[randomIndex];
+                weekMenu.push({day, restaurant: selectedRestaurant});
             } else {
                 weekMenu.push({day, restaurant: "No restaurant available"});
             }
         });
 
-        updateCalendarWithMenu(weekMenu);
-    }
+    updateCalendarWithMenu(weekMenu);
+}
 
 
     function createCalendar() {
