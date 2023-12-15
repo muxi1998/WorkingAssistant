@@ -165,6 +165,12 @@
         let currentDay = today.getDate();
         let calendarDays = document.querySelectorAll('.calendar-day');
 
+        // 清除先前的晚餐安排
+        calendarDays.forEach(dayElement => {
+            let date = parseInt(dayElement.innerText.split('\n')[0]);
+            dayElement.innerText = isNaN(date) ? '' : date;
+        });
+
         weekMenu.forEach((menu, index) => {
             // 計算每天在日曆中的正確位置
             let dayPosition = currentDay - dayOfWeek + index + 1;
