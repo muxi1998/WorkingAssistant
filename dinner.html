@@ -49,9 +49,57 @@
             width: auto; /* 保持圖片的寬高比 */
         }
 
+        .button {
+            background-color: #000000; /* 綠色背景 */
+            color: white;
+            padding: 15px 30px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #959595; /* 深綠色 */
+            scale: 1.1;
+        }
+
+        #restaurantInput {
+            font-size: 16px; /* 增加字體大小 */
+            padding: 10px; /* 增加內間距以提高可讀性 */
+            width: 300px; /* 調整輸入框的寬度 */
+            margin-left: 20px;
+        }
+
+        .button__restaurant {
+            font-size: 16px; /* 增加字體大小 */
+            padding: 10px 20px; /* 增加內間距以提高可讀性和舒適性 */
+            margin: 5px; /* 添加一些外邊距 */
+            border: 1px solid #ddd; /* 添加邊框 */
+            cursor: pointer; /* 鼠標懸停時顯示手指指標 */
+            background-color: #f5f5f5; /* 設定背景顏色 */
+            border-radius: 5px; /* 添加邊框圓角 */
+        }
+
+        .button__restaurant:hover {
+            background-color: #ddd; /* 懸停時改變背景顏色 */
+        }
+
+        #restaurantList {
+            margin: 20px;
+        }
+
+
     </style>
 </head>
 <body>
+
+<div class="header">
+    <button onclick="window.location.href='index.html'" class="button">返回主頁</button>
+    <!-- 其他內容 -->
+</div>
+
 
 <div class="logo-container">
     <img src="imgs/logo.jpg" alt="Logo">
@@ -66,8 +114,8 @@
 
 <div>
     <input type="text" id="restaurantInput" placeholder="輸入餐廳名稱">
-    <button onclick="addRestaurant()">添加餐廳</button>
-    <button onclick="generateWeeklyMenu()">產生本週晚餐</button>
+    <button onclick="addRestaurant()" class="button__restaurant">添加餐廳</button>
+    <button onclick="generateWeeklyMenu()" class="button__restaurant">產生本週晚餐</button>
     <div id="restaurantList"></div>
 </div>
 
@@ -221,6 +269,13 @@
         let currentMonth = new Date().getMonth();
         document.getElementById('currentMonth').innerText = monthNames[currentMonth] + ' 菜單';
     }
+
+    document.getElementById('restaurantInput').addEventListener('keypress', function(event) {
+        if (event.keyCode === 13) { // 13 是 Enter 鍵的 keyCode
+            addRestaurant(); // 調用添加餐廳的函數
+        }
+    });
+
 
     // 呼叫此函數來更新月份顯示
     updateCurrentMonthDisplay();
