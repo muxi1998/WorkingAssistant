@@ -89,9 +89,19 @@
             `<div>
                 <input type="checkbox" id="restaurant${index}" name="restaurant" value="${restaurant}" checked>
                 <label for="restaurant${index}">${restaurant}</label>
+                <button onclick="deleteRestaurant(${index})">刪除</button>
             </div>`
         ).join('');
         document.getElementById('restaurantList').innerHTML = listHtml;
+    }
+
+    function deleteRestaurant(index) {
+        // 從餐廳列表中移除指定索引的餐廳
+        restaurants.splice(index, 1);
+        // 更新顯示的餐廳列表
+        updateRestaurantList();
+        // 更新本地儲存的餐廳列表
+        localStorage.setItem('restaurants', JSON.stringify(restaurants));
     }
 
     function generateWeeklyMenu() {
