@@ -59,14 +59,17 @@
 
 <div>
     <h1>安親班晚餐安排</h1>
-    <input type="text" id="restaurantInput" placeholder="輸入餐廳名稱">
-    <button onclick="addRestaurant()">添加餐廳</button>
-    <button onclick="generateWeeklyMenu()">產生本週晚餐</button>
+    <h3 id="currentMonth"></h3>
 </div>
 
 <div id="calendar"></div>
 
-<div id="restaurantList"></div>
+<div>
+    <input type="text" id="restaurantInput" placeholder="輸入餐廳名稱">
+    <button onclick="addRestaurant()">添加餐廳</button>
+    <button onclick="generateWeeklyMenu()">產生本週晚餐</button>
+    <div id="restaurantList"></div>
+</div>
 
 <script>
     let restaurants = JSON.parse(localStorage.getItem('restaurants')) || [];
@@ -123,8 +126,8 @@
             }
         });
 
-    updateCalendarWithMenu(weekMenu);
-}
+        updateCalendarWithMenu(weekMenu);
+    }
 
 
     function createCalendar() {
@@ -198,6 +201,14 @@
         });
     }
 
+    function updateCurrentMonthDisplay() {
+        const monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+        let currentMonth = new Date().getMonth();
+        document.getElementById('currentMonth').innerText = monthNames[currentMonth] + '的菜單';
+    }
+
+    // 呼叫此函數來更新月份顯示
+    updateCurrentMonthDisplay();
 
     createCalendar();
     updateRestaurantList();
