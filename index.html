@@ -37,7 +37,7 @@
         .menu {
             display: inline-block;
             margin: 40px auto;
-            padding: 20px;
+            /* padding: 20px; */
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -46,25 +46,38 @@
         .menu-item {
             padding: 10px 20px;
             border-bottom: 1px solid #ddd;
+            background-color: #fff; /* 初始背景色 */
+            border-radius: 5px; /* 圓角化 */
+            transition: transform 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease; /* 添加過渡效果 */
         }
+
         .menu-item:last-child {
             border-bottom: none;
         }
+
         .menu-item a {
             text-decoration: none;
             color: black;
-            display: block; /* 使連結區塊顯示 */
-            text-align: center; /* 文字居中 */
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background-color: transparent; /* 確保連結背景透明 */
         }
 
+        .menu-item:hover {
+            transform: scale(1.05); /* 懸停時放大 */
+            background-color: #cfcecebe; /* 改變背景色 */
+            border-bottom: 1px solid transparent; /* 改變邊框顏色 */
+        }
+
+
         .icon-container {
-            display: block; /* 確保圖標獨立成行 */
-            font-size: 40px; /* 放大圖標 */
-            margin-bottom: 15px; /* 在圖標和文字之間添加一些間距 */
+            font-size: 50px;
+            margin-bottom: 10px;
         }
 
         .text-container {
-            display: block; /* 確保文字獨立成行 */
+            display: block;
         }
 
         .description {
