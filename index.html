@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+    <!--==================== UNICONS ====================-->
+    <link rel="stylesheet" type="text/css" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>主頁面</title>
@@ -49,9 +52,21 @@
         }
         .menu-item a {
             text-decoration: none;
-            color: #333;
-            font-size: 18px;
+            color: black;
+            display: block; /* 使連結區塊顯示 */
+            text-align: center; /* 文字居中 */
         }
+
+        .icon-container {
+            display: block; /* 確保圖標獨立成行 */
+            font-size: 40px; /* 放大圖標 */
+            margin-bottom: 15px; /* 在圖標和文字之間添加一些間距 */
+        }
+
+        .text-container {
+            display: block; /* 確保文字獨立成行 */
+        }
+
         .description {
             margin-top: 20px;
             color: #666;
@@ -67,7 +82,11 @@
     
     <div class="menu">
         <div class="menu-item">
-            <a href="dinner.html">本週菜單</a>
+            <a href="dinner.html" >
+                <div class="icon-container"><i class="uil uil-restaurant"></i></div>
+                <div class="text-container">菜單產生器</div>
+                
+            </a>
         </div>
         <!-- 可以在這裡加入更多選單項目 -->
     </div>
