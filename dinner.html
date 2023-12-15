@@ -90,6 +90,24 @@
             margin: 20px;
         }
 
+        .restaurant-item {
+            display: flex; /* 啟用flexbox */
+            align-items: center; /* 垂直居中對齊 */
+            margin-bottom: 10px; /* 添加一些間距 */
+        }
+
+        .restaurant-item input[type="checkbox"] {
+            margin-right: 10px; /* 為勾選框和標籤之間添加間距 */
+        }
+
+        .restaurant-item label {
+            flex-grow: 1; /* 讓標籤佔據可用空間 */
+        }
+
+        .restaurant-item button {
+            margin-left: 10px; /* 為按鈕和標籤之間添加間距 */
+        }
+
 
     </style>
 </head>
@@ -134,7 +152,7 @@
 
     function updateRestaurantList() {
         let listHtml = restaurants.map((restaurant, index) => 
-            `<div>
+            `<div class="restaurant-item">
                 <input type="checkbox" id="restaurant${index}" name="restaurant" value="${restaurant}" checked>
                 <label for="restaurant${index}">${restaurant}</label>
                 <button onclick="deleteRestaurant(${index})">刪除</button>
@@ -142,6 +160,7 @@
         ).join('');
         document.getElementById('restaurantList').innerHTML = listHtml;
     }
+
 
     function deleteRestaurant(index) {
         // 從餐廳列表中移除指定索引的餐廳
