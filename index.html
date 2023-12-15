@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安親班晚餐安排</title>
+    <style>
+        /* 基本的CSS樣式 */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* 7天一週 */
+            grid-gap: 5px;
+            margin: 20px;
+        }
+        .calendar-day {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .today {
+            background-color: #bde0fe;
+        }
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* 7天一週 */
+            background-color: #f0f0f0;
+            padding: 5px 0;
+        }
+        .calendar-header div {
+            text-align: center;
+            padding: 5px 0;
+        }
+        .calendar-day {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            min-height: 100px; /* 確保有足夠的空間顯示晚餐資訊 */
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <h1>安親班晚餐安排</h1>
+    <input type="text" id="restaurantInput" placeholder="輸入餐廳名稱">
+    <button onclick="addRestaurant()">添加餐廳</button>
+    <button onclick="generateWeeklyMenu()">產生本週晚餐</button>
+</div>
+
+<div id="calendar"></div>
+
+<div id="restaurantList"></div>
+
+<script>
+    let restaurants = JSON.parse(localStorage.getItem('restaurants')) || [];
+
+    function addRestaurant() {
+        let restaurantName = document.getElementById('restaurantInput').value;
+        if (restaurantName && restaurants.indexOf(restaurantName) === -1) {
+            restaurants.push(restaurantName);
+            localStorage.setItem('restaurants', JSON.stringify(restaurants));
+            updateRestaurantList();
+            document.getElementById('restaurantInput').value = '';
+        }
+    }
+
+    function updateRestaurantList() {
+        let listHtml = restaurants.map((restaurant, index) => 
+            `<div>
+                <input type="checkbox" id="restaurant${index}" name="restaurant" value="${restaurant}" checked>
+                <label for="restaurant${index}">${restaurant}</label>
+            </div>`
+        ).join('');
+        document.getElementById('restaurantList').innerHTML = listHtml;
+    }
+
+    function generateWeeklyMenu() {
+        let selectedRestaurants = [];
+        document.querySelectorAll('#restaurantList input[type="checkbox"]:checked').forEach(checkbox => {
+            selectedRestaurants.push(checkbox.value);
+        });
+
+        let daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+        let weekMenu = [];
+        let availableRestaurants = [...selectedRestaurants];
+
+        daysOfWeek.forEach(day => {
+            if (availableRestaurants.length > 0) {
+                let randomIndex = Math.floor(Math.random() * availableRestaurants.length);
+                let selectedRestaurant = availableRestaurants[randomIndex];
+                weekMenu.push({day, restaurant: selectedRestaurant});
+                availableRestaurants.splice(randomIndex, 1); // 避免重複
+            } else {
+                weekMenu.push({day, restaurant: "No restaurant available"});
+            }
+        });
+
+        updateCalendarWithMenu(weekMenu);
+    }
+
+
+    function createCalendar() {
+        let today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+
+        let firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(); // 獲取當月第一天是星期幾
+        let daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // 獲取當月的天數
+
+        let calendarDiv = document.getElementById("calendar");
+        calendarDiv.innerHTML = ''; // 清除上次的日曆
+
+        // 添加星期標題
+        let dayNames = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+        let calendarHeaderRow = document.createElement("div");
+        calendarHeaderRow.className = 'calendar-header';
+        dayNames.forEach(dayName => {
+            let dayElement = document.createElement("div");
+            dayElement.innerText = dayName;
+            calendarHeaderRow.appendChild(dayElement);
+        });
+        calendarDiv.appendChild(calendarHeaderRow);
+
+        // 創建日曆格子
+        let calendarGrid = document.createElement("div");
+        calendarGrid.className = 'calendar-grid';
+
+        // 在第一天之前添加空白格
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            let emptyDayElement = document.createElement("div");
+            emptyDayElement.className = 'calendar-day';
+            calendarGrid.appendChild(emptyDayElement);
+        }
+
+        // 填充每個月的天數
+        for (let day = 1; day <= daysInMonth; day++) {
+            let dayElement = document.createElement("div");
+            dayElement.innerText = day;
+            dayElement.className = 'calendar-day';
+            if (day === today.getDate() && currentMonth === today.getMonth()) {
+                dayElement.classList.add("today");
+            }
+            calendarGrid.appendChild(dayElement);
+        }
+
+        calendarDiv.appendChild(calendarGrid);
+    }
+
+
+    function updateCalendarWithMenu(weekMenu) {
+        let today = new Date();
+        let dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+        let currentDay = today.getDate();
+        let calendarDays = document.querySelectorAll('.calendar-day');
+
+        weekMenu.forEach((menu, index) => {
+            // 計算每天在日曆中的正確位置
+            let dayPosition = currentDay - dayOfWeek + index + 1;
+            let dayElement = Array.from(calendarDays).find(el => parseInt(el.innerText) === dayPosition);
+            if (dayElement) {
+                // dayElement.innerText += `\n${menu.day}: ${menu.restaurant}`;
+                dayElement.innerText += `\n${menu.restaurant}`;
+            }
+        });
+    }
+
+
+    createCalendar();
+    updateRestaurantList();
+</script>
+
+</body>
+</html>
